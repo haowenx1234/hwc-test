@@ -16,7 +16,7 @@
 
 cc_binary {
     //name: "VtsHalGraphicsComposerV2_1TargetTest",
-    name: "HalTest",
+    name: "3HalTest",
     defaults: ["VtsHalTargetTestDefaults"],
     srcs: ["HalTest.cpp",
     ],

@@ -70,6 +70,13 @@ class GraphicsComposerHwcTest {
         return 0;
      }
     void sendRefreshFrame();
+    void GetClientTargetSupport();
+    void SetPowerModeOff();
+    void SetPowerModeOn();
+    void set_color_transform();
+    void CreateVirtualDisplay();
+    void GetDisplayConfig();
+    void SetActiveConfig();
       const native_handle_t* allocate() {
         uint64_t usage =
                 static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN |
@@ -81,8 +88,8 @@ class GraphicsComposerHwcTest {
 
     std::unique_ptr<CommandWriterBase> mWriter;
     std::unique_ptr<TestCommandReader> mReader;
-    int32_t mDisplayWidth = 960;
-    int32_t mDisplayHeight = 540;
+    int32_t mDisplayWidth = 1920;
+    int32_t mDisplayHeight = 1080;
 
     private:
      std::unique_ptr<Gralloc> mGralloc;
@@ -187,6 +194,136 @@ void GraphicsComposerHwcTest::sendRefreshFrame() {
  
      sleep(10);/* */
  }
+
+void GraphicsComposerHwcTest::GetClientTargetSupport() {
+    std::vector<Config> configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay);
+    for (auto config : configs) {
+        int32_t width = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
+                                                             IComposerClient::Attribute::WIDTH);
+        int32_t height = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
+                                                              IComposerClient::Attribute::HEIGHT);
+        ASSERT_LT(0, width);
+        ASSERT_LT(0, height);
+	std::cout << "config = " <<config << std::endl;
+	std::cout << "width = " <<width << std::endl;
+	std::cout << "height = " << height << std::endl;
+        mComposerClient->setActiveConfig(mPrimaryDisplay, 1);
+	//width = mComposerClient->getDisplayAttribute(mPrimaryDisplay, 1,
+        //                                                     IComposerClient::Attribute::WIDTH);
+	//std::cout << "width = " <<width << std::endl;
+        //ASSERT_TRUE(mComposerClient->getClientTargetSupport(
+         //   mPrimaryDisplay, width, height, PixelFormat::RGBA_8888, Dataspace::UNKNOWN));
+    }
+}
+void GraphicsComposerHwcTest::SetPowerModeOff() {
+    std::vector<IComposerClient::PowerMode> modes;
+    modes.push_back(IComposerClient::PowerMode::OFF);
+   // modes.push_back(IComposerClient::PowerMode::ON);
+   // modes.push_back(IComposerClient::PowerMode::OFF);
+    for (auto mode : modes) {
+        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+    }
+/*    std::cout << "1...."  << std::endl;
+    sleep(5);
+    modes.clear();
+
+    modes.push_back(IComposerClient::PowerMode::OFF);
+    modes.push_back(IComposerClient::PowerMode::OFF);
+    for (auto mode : modes) {
+        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+    }
+    std::cout << "2...."  << std::endl;
+    sleep(5);
+    modes.clear();
+    if (mComposerClient->getDozeSupport(mPrimaryDisplay)) {
+        modes.push_back(IComposerClient::PowerMode::DOZE);
+        modes.push_back(IComposerClient::PowerMode::DOZE);
+
+        for (auto mode : modes) {
+            ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+        }
+
+        modes.clear();
+
+        modes.push_back(IComposerClient::PowerMode::DOZE_SUSPEND);
+        modes.push_back(IComposerClient::PowerMode::DOZE_SUSPEND);
+
+        for (auto mode : modes) {
+            ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+        }
+    }
+    std::cout << "3...."  << std::endl;
+    sleep(5);
+
+    modes.clear();
+
+    modes.push_back(IComposerClient::PowerMode::ON);
+    modes.push_back(IComposerClient::PowerMode::ON);
+    for (auto mode : modes) {
+        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+    }
+    std::cout << "4...." << std::endl;
+    sleep(5);*/
+}
+void  GraphicsComposerHwcTest::CreateVirtualDisplay() {
+    if (mComposerClient->getMaxVirtualDisplayCount() == 0) {
+        GTEST_SUCCEED() << "no virtual display support";
+        return;
+    }
+
+    Display display;
+    PixelFormat format;
+    ASSERT_NO_FATAL_FAILURE(
+        display = mComposerClient->createVirtualDisplay(64, 64, PixelFormat::IMPLEMENTATION_DEFINED,
+                                                        kBufferSlotCount, &format));
+
+    // test display type
+    IComposerClient::DisplayType type = mComposerClient->getDisplayType(display);
+    EXPECT_EQ(IComposerClient::DisplayType::VIRTUAL, type);
+
+    //mComposerClient->destroyVirtualDisplay(display);
+}
+
+void GraphicsComposerHwcTest::SetPowerModeOn() {
+    std::vector<IComposerClient::PowerMode> modes;
+    modes.push_back(IComposerClient::PowerMode::ON);
+   // modes.push_back(IComposerClient::PowerMode::ON);
+   // modes.push_back(IComposerClient::PowerMode::OFF);
+    for (auto mode : modes) {
+        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
+    }
+}
+void GraphicsComposerHwcTest::GetDisplayConfig() {
+    std::vector<Config> configs;
+    ASSERT_NO_FATAL_FAILURE(configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay));
+
+    std::cout << "config  = "<< std::endl;
+    for (auto config : configs) {
+    	std::cout << "config  = " << config << std::endl;
+    }
+}
+void GraphicsComposerHwcTest::SetActiveConfig() {
+   // std::vector<Config> configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay);
+   // for (auto config : configs) {
+        mComposerClient->setActiveConfig(mPrimaryDisplay, 7);
+     //   ASSERT_EQ(config, mComposerClient->getActiveConfig(mPrimaryDisplay));
+   // }
+}
+
+//TEST_P(GraphicsComposerHidlCommandTest, SET_COLOR_TRANSFORM) {
+void GraphicsComposerHwcTest::set_color_transform(){
+    const std::array<float, 16> identity = {{
+        1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        1.0f,
+    }};
+
+    mWriter->selectDisplay(mPrimaryDisplay);
+    mWriter->setColorTransform(identity.data(), ColorTransform::IDENTITY);
+
+    execute();
+}
+
+
  
 }}}}}}
 /*
