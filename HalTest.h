@@ -38,6 +38,11 @@
 #include <mutex>
 #include <unordered_set>
 #include <vector>
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 namespace android {
 namespace hardware {
 namespace graphics {
@@ -69,7 +74,7 @@ class GraphicsComposerHwcTest {
 
         return 0;
      }
-    void sendRefreshFrame();
+    void sendRefreshFrame(char *filename);
     void GetClientTargetSupport();
     void SetPowerModeOff();
     void SetPowerModeOn();
@@ -77,6 +82,7 @@ class GraphicsComposerHwcTest {
     void CreateVirtualDisplay();
     void GetDisplayConfig();
     void SetActiveConfig();
+    void set_layer_transform();
       const native_handle_t* allocate() {
         uint64_t usage =
                 static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN |
@@ -143,7 +149,129 @@ void GraphicsComposerHwcTest::init() {
         // we are assuming a device will never have
         //ASSERT_NE(0, mInvalidDisplayId);
 }
-void GraphicsComposerHwcTest::sendRefreshFrame() {
+
+typedef unsigned short int WORD;
+typedef unsigned int DWORD;
+typedef signed int LONG;
+typedef unsigned char BYTE;
+typedef long int UINT;
+typedef struct tagBITMAPFILEHEADER {
+    WORD   bfType;           /* "BM" */
+    DWORD  bfSize;           /* Size of file in bytes */
+    WORD   bfReserved1;      /* set to 0 */
+    WORD   bfReserved2;      /* set to 0 */
+    DWORD  bfOffBits;        /* Byte offset to actual bitmap data (= 54 if RGB) */
+}__attribute__((packed)) BITMAPFILEHEADER;
+typedef struct tagBITMAPINFOHEADER {
+    DWORD  biSize;           /* Size of BITMAPINFOHEADER, in bytes (= 40) */
+    LONG   biWidth;          /* Width of image, in pixels */
+    LONG   biHeight;         /* Height of images, in pixels */
+    WORD   biPlanes;         /* Number of planes in target device (set to 1) */
+    WORD   biBitCount;       /* Bits per pixel (24 in this case) */
+    DWORD  biCompression;    /* Type of compression (0 if no compression) */
+    DWORD  biSizeImage;      /* Image size, in bytes (0 if no compression) */
+    LONG   biXPelsPerMeter;  /* Resolution in pixels/meter of display device */
+    LONG   biYPelsPerMeter;  /* Resolution in pixels/meter of display device */
+    DWORD  biClrUsed;        /* Number of colors in the color table (if 0, use
+                                maximum allowed by biBitCount) */
+    DWORD  biClrImportant;   /* Number of important colors.  If 0, all colors
+                                are important */
+}__attribute__((packed)) BITMAPINFOHEADER;
+int read_bmp(unsigned char** image,char* fileName){
+	FILE* input;
+    int width, height, level;
+    BITMAPFILEHEADER bmfhdr;
+    BITMAPINFOHEADER bmihdr;
+ 	printf("filename %s", fileName);
+	if (!(input = fopen(fileName, "r"))) {
+	//if (!(input = fopen("/data/local/tmp/1.bmp", "r"))) {
+            printf("Cannot open file .\n");
+			return 0;
+     }
+	    fread(&bmfhdr.bfType, sizeof(WORD), 1, input);
+        fread(&bmfhdr.bfSize, sizeof(DWORD), 1, input);
+        fread(&bmfhdr.bfReserved1, sizeof(WORD), 1, input);
+        fread(&bmfhdr.bfReserved2, sizeof(WORD), 1, input);
+        fread(&bmfhdr.bfOffBits, sizeof(DWORD), 1, input);
+        fread(&bmihdr.biSize, sizeof(DWORD), 1, input);
+        fread(&bmihdr.biWidth, sizeof(LONG), 1, input);
+        fread(&bmihdr.biHeight, sizeof(LONG), 1, input);
+        fread(&bmihdr.biPlanes, sizeof(WORD), 1, input);
+        fread(&bmihdr.biBitCount, sizeof(WORD), 1, input);
+        fread(&bmihdr.biCompression, sizeof(DWORD), 1, input);
+        fread(&bmihdr.biSizeImage, sizeof(DWORD), 1, input);
+        fread(&bmihdr.biXPelsPerMeter, sizeof(LONG), 1, input);
+        fread(&bmihdr.biYPelsPerMeter, sizeof(LONG), 1, input);
+        fread(&bmihdr.biClrUsed, sizeof(DWORD), 1, input);
+        fread(&bmihdr.biClrImportant, sizeof(DWORD), 1, input);
+        printf("+------------------+\n");
+        printf("| bfType: %d\n", bmfhdr.bfType);
+        printf("| bfSize: %d\n", bmfhdr.bfSize);
+        printf("| bfReserved1: %d\n", bmfhdr.bfReserved1);
+        printf("| bfReserved2: %d\n", bmfhdr.bfReserved2);
+        printf("| bfOffBits: %d\n", bmfhdr.bfOffBits);
+        printf("| biSize: %d\n", bmihdr.biSize);
+        printf("| biWidth: %d\n", bmihdr.biWidth);
+        printf("| biHeight: %d\n", bmihdr.biHeight);
+        printf("| biPlanes: %d\n", bmihdr.biPlanes);
+        printf("| biBitCount: %d\n", bmihdr.biBitCount);
+        printf("| biCompression: %d\n", bmihdr.biCompression);
+        printf("| biSizeImage: %d\n", bmihdr.biSizeImage);
+        printf("| biXPelsPerMeter: %d\n", bmihdr.biXPelsPerMeter);
+        printf("| biYPelsPerMeter: %d\n", bmihdr.biYPelsPerMeter);
+        printf("| biClrUsed: %d\n", bmihdr.biClrUsed);
+        printf("| biClrImportant: %d\n", bmihdr.biClrImportant);
+        printf("+------------------+\n");
+        /* width and height of bmp image. */
+        width = bmihdr.biWidth;
+        height = bmihdr.biHeight;
+        level = 4;
+//		*out_width = width;
+//		*out_height = height;
+     //   *image = (BYTE*)malloc(height * width * level * sizeof(BYTE));
+     //   memset(*image, 0x00, height * width * level * sizeof(BYTE));
+        /* read pixel from file to array image. */
+        /*
+          bmihdr.biBitCount = 1  -> Binary image.
+          bmihdr.biBitCount = 8  -> Gray-Level or Indexed image.
+          bmihdr.biBitCount = 24 -> RGB image.
+        */
+        if ((bmihdr.biBitCount == 1) || (bmihdr.biBitCount == 8)) {
+			return 0;
+			/*
+            offset = bmfhdr.bfOffBits - 54;
+            fseek(input, offset, SEEK_CUR);
+            auto size = height* width* bmihdr.biBitCount / 8;
+            fread(image, 1, size, input);
+            fclose(input);
+			*///libavif did not surport this format
+        }
+    	else if (bmihdr.biBitCount == 24 || bmihdr.biBitCount == 32) {
+        	int readPos = 0;
+        	for (int i = height - 1; i >= 0; i--) {
+           	 	readPos = i * width * (bmihdr.biBitCount / 8);
+            	int s = (size_t)(long)width * (bmihdr.biBitCount / 8);
+	//	std::cout << "readPos = " << readPos << std::endl;
+	//	std::cout << s << std::endl;
+            	 fread(*image + readPos, 1, s, input);
+       		/*for (int i = 0; i < 1080; i++) {
+           	 	readPos = i * width * (bmihdr.biBitCount / 8) + 138;
+            	int s = (size_t)(long)width * (bmihdr.biBitCount / 8);
+		std::cout << "readPos = " << readPos << std::endl;
+		std::cout << s << std::endl;
+            	 fread(*image + readPos, 1, s, input);
+		 */
+        }
+        fclose(input);
+    	}
+        else {
+            printf("Something wrong with biBitCount of image\n");
+            return 0;
+        }
+	//	*bitCount = bmihdr.biBitCount;
+		return 1;
+}
+void GraphicsComposerHwcTest::sendRefreshFrame(char * filename) {
      mWriter->selectDisplay(mPrimaryDisplay);
      mComposerClient->setPowerMode(mPrimaryDisplay, IComposerClient::PowerMode::ON);
      mComposerClient->setColorMode(mPrimaryDisplay, ColorMode::NATIVE);
@@ -159,15 +287,19 @@ void GraphicsComposerHwcTest::sendRefreshFrame() {
      std::cout << "6 powerdown off" << std::endl;
      data = static_cast<uint8_t*>(mGralloc->lock(handle, static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN),
                                                                          region, fence.release()));
-     for (uint32_t x = 0; x < mDisplayWidth; x++) {
+	read_bmp(&data,filename);
+     /*for (uint32_t x = 0; x < mDisplayWidth; x++) {
      for (uint32_t y = 0; y < mDisplayHeight; y++) {
              memset(data,0x00, 1);
-             memset(data,0xff, 1);
-             memset(data,0xff, 1);
+	     data += 1;
+             memset(data,0xf1, 1);
+	     data += 1;
              memset(data,0x88, 1);
+	     data += 1;
+             memset(data,0xff, 1);
+	     data += 1;
  
-             data += 4;
-     }}
+     }}*/
  
      Layer layer;
              layer = mComposerClient->createLayer(mPrimaryDisplay, kBufferSlotCount);
@@ -192,7 +324,7 @@ void GraphicsComposerHwcTest::sendRefreshFrame() {
      mWriter->presentDisplay();
      execute();
  
-     sleep(10);/* */
+     sleep(3);/* */
  }
 
 void GraphicsComposerHwcTest::GetClientTargetSupport() {
@@ -323,6 +455,35 @@ void GraphicsComposerHwcTest::set_color_transform(){
     execute();
 }
 
+void GraphicsComposerHwcTest::set_layer_transform() {
+    Layer layer;
+    ASSERT_NO_FATAL_FAILURE(layer =
+                                mComposerClient->createLayer(mPrimaryDisplay, kBufferSlotCount));
+
+    mWriter->selectDisplay(mPrimaryDisplay);
+    mWriter->selectLayer(layer);
+    mWriter->setLayerTransform(static_cast<Transform>(0));
+    mWriter->setLayerTransform(Transform::FLIP_H);
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(Transform::FLIP_V);
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(Transform::ROT_90);
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(Transform::ROT_180);
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(Transform::ROT_270);
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(static_cast<Transform>(Transform::FLIP_H | Transform::ROT_90));
+    execute();
+    sleep(3);
+    mWriter->setLayerTransform(static_cast<Transform>(Transform::FLIP_V | Transform::ROT_90));
+    execute();
+}
 
  
 }}}}}}
