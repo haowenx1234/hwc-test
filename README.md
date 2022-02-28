@@ -2,7 +2,7 @@ hwc utility 功能介绍
 
 1. 显示bmp格式图片
 
-Copy the executable and breakthrough to /data/local/tmp
+Copy the executable and pictures to /data/local/tmp
 
 ./hwc-utility -d image.bmp
 
