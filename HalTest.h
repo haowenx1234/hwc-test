@@ -81,8 +81,10 @@ class GraphicsComposerHwcTest {
     void set_color_transform();
     void CreateVirtualDisplay();
     void GetDisplayConfig();
-    void SetActiveConfig();
+    void SetActiveConfig(int);
     void set_layer_transform();
+	void GetColorModes();
+	void SetColorMode();
       const native_handle_t* allocate() {
         uint64_t usage =
                 static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN |
@@ -339,7 +341,7 @@ void GraphicsComposerHwcTest::GetClientTargetSupport() {
 	std::cout << "config = " <<config << std::endl;
 	std::cout << "width = " <<width << std::endl;
 	std::cout << "height = " << height << std::endl;
-        mComposerClient->setActiveConfig(mPrimaryDisplay, 1);
+   // mComposerClient->setActiveConfig(mPrimaryDisplay, 1);
 	//width = mComposerClient->getDisplayAttribute(mPrimaryDisplay, 1,
         //                                                     IComposerClient::Attribute::WIDTH);
 	//std::cout << "width = " <<width << std::endl;
@@ -355,47 +357,6 @@ void GraphicsComposerHwcTest::SetPowerModeOff() {
     for (auto mode : modes) {
         ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
     }
-/*    std::cout << "1...."  << std::endl;
-    sleep(5);
-    modes.clear();
-
-    modes.push_back(IComposerClient::PowerMode::OFF);
-    modes.push_back(IComposerClient::PowerMode::OFF);
-    for (auto mode : modes) {
-        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
-    }
-    std::cout << "2...."  << std::endl;
-    sleep(5);
-    modes.clear();
-    if (mComposerClient->getDozeSupport(mPrimaryDisplay)) {
-        modes.push_back(IComposerClient::PowerMode::DOZE);
-        modes.push_back(IComposerClient::PowerMode::DOZE);
-
-        for (auto mode : modes) {
-            ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
-        }
-
-        modes.clear();
-
-        modes.push_back(IComposerClient::PowerMode::DOZE_SUSPEND);
-        modes.push_back(IComposerClient::PowerMode::DOZE_SUSPEND);
-
-        for (auto mode : modes) {
-            ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
-        }
-    }
-    std::cout << "3...."  << std::endl;
-    sleep(5);
-
-    modes.clear();
-
-    modes.push_back(IComposerClient::PowerMode::ON);
-    modes.push_back(IComposerClient::PowerMode::ON);
-    for (auto mode : modes) {
-        ASSERT_NO_FATAL_FAILURE(mComposerClient->setPowerMode(mPrimaryDisplay, mode));
-    }
-    std::cout << "4...." << std::endl;
-    sleep(5);*/
 }
 void  GraphicsComposerHwcTest::CreateVirtualDisplay() {
     if (mComposerClient->getMaxVirtualDisplayCount() == 0) {
@@ -429,15 +390,14 @@ void GraphicsComposerHwcTest::GetDisplayConfig() {
     std::vector<Config> configs;
     ASSERT_NO_FATAL_FAILURE(configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay));
 
-    std::cout << "config  = "<< std::endl;
     for (auto config : configs) {
     	std::cout << "config  = " << config << std::endl;
     }
 }
-void GraphicsComposerHwcTest::SetActiveConfig() {
+void GraphicsComposerHwcTest::SetActiveConfig(int config) {
    // std::vector<Config> configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay);
    // for (auto config : configs) {
-        mComposerClient->setActiveConfig(mPrimaryDisplay, 7);
+        mComposerClient->setActiveConfig(mPrimaryDisplay, config);
      //   ASSERT_EQ(config, mComposerClient->getActiveConfig(mPrimaryDisplay));
    // }
 }
@@ -485,6 +445,26 @@ void GraphicsComposerHwcTest::set_layer_transform() {
     execute();
 }
 
+void GraphicsComposerHwcTest::GetColorModes() {
+     std::vector<ColorMode> modes = mComposerClient->getColorModes(mPrimaryDisplay);
+     auto nativeModeLocation = std::find(modes.begin(), modes.end(), ColorMode::NATIVE);
+     //auto nativeModeLocation = std::find(modes.begin(), modes.end(), ColorMode::SRGB); 
+     ASSERT_NE(modes.end(), nativeModeLocation);
+ }
+void GraphicsComposerHwcTest::SetColorMode() {
+     std::unordered_set<ColorMode> validModes;
+     for (auto mode : hidl_enum_range<ColorMode>()) {
+         validModes.insert(mode);
+     }
+ 
+     std::vector<ColorMode> modes = mComposerClient->getColorModes(mPrimaryDisplay);
+     for (auto mode : modes) {
+	//	 std::cout <<" mode = " << ColorMode::NATIVE << std::endl;
+         if (validModes.count(mode)) {
+             mComposerClient->setColorMode(mPrimaryDisplay, mode);
+         }
+     }
+ }
  
 }}}}}}
 /*

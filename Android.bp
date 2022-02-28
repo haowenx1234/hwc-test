@@ -15,8 +15,7 @@
 //
 
 cc_binary {
-    //name: "VtsHalGraphicsComposerV2_1TargetTest",
-    name: "3HalTest",
+    name: "hwc-utility",
     defaults: ["VtsHalTargetTestDefaults"],
     srcs: ["HalTest.cpp",
     ],
@@ -49,6 +48,4 @@ cc_binary {
     header_libs: [
         "android.hardware.graphics.composer@2.1-command-buffer",
     ],
-  //  disable_framework: true,
-  //  test_suites: ["general-tests", "vts"],
 }

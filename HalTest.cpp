@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define MAX_PATH_SIZE 50
 #define PICTURE_PATH "/data/local/tmp"
 int main(int argc,char *argv[]){
@@ -24,20 +25,23 @@ int main(int argc,char *argv[]){
 				mHwc.SetPowerModeOff();
 			}
 			else if(strcmp(argv[2],"mode") == 0 ){
-				mHwc.SetActiveConfig();
+				mHwc.SetActiveConfig(atoi(argv[3]));
 			}else if(strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"transfrom") == 0){
 				std::cout << "layer" << std::endl;
 				mHwc.set_layer_transform();
 			}else if(strcmp(argv[2],"color") == 0 && strcmp(argv[3],"transfrom") == 0){
                                 std::cout << "color" << std::endl;
                                 mHwc.set_color_transform();
-                        }
-
+            }else if(strcmp(argv[2],"color") == 0 && strcmp(argv[3],"mode") == 0){
+				mHwc.SetColorMode();
+			}
 
 		//	mHwc.GetClientTargetSupport();
 			break;
 			case 'c':
-			mHwc.CreateVirtualDisplay();
+			if(strcmp(argv[2],"VirtualDisplay") == 0 ){
+				mHwc.CreateVirtualDisplay();
+			}
 		//	mHwc.SetPowerModeVariations();
 			break;
 			case 'd':
@@ -47,7 +51,11 @@ int main(int argc,char *argv[]){
 			break;
 			case 'g':
 		//	mHwc.set_color_transform();
-			mHwc.GetDisplayConfig();
+			if(strcmp(argv[2],"mode") == 0 ){
+				mHwc.GetDisplayConfig();
+			}else if(strcmp(argv[2],"color") == 0&& strcmp(argv[3],"mode")==0 ){
+				mHwc.GetColorModes();
+			}
 			break;
 			}
 		}
