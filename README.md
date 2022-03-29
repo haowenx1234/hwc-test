@@ -1,3 +1,4 @@
+version 1.0                                                                                                                                                             
 How to build                                                                                                                                                           
 Copy this folder hwc-test to any location                                                                                                                               under the Android source code
 Compile this program with the mm command
