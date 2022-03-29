@@ -9,12 +9,12 @@ hwc utility 功能介绍
 
 
 3 控示显示模式
-	1 查询能显示的mode                                                                                                               
-		./hwc-utility -g display mode
-	2 控制显示模式
-		./hwc-utility -s display mode mode id
-4 查看显示mode的property
-./hwc-utility -g display property
+	1 查询能显示的mode                                                                                                              
+		./hwc-utility -g display mode                                                                                               
+	2 控制显示模式                                                                                                                       
+		./hwc-utility -s display mode mode id                                                                                       
+4 查看显示mode的property                                                                                                                     
+./hwc-utility -g display property                                                                                                           
 
 5 创建虚拟屏
 ./hwc-utility -c VirtualDisplay
