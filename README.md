@@ -12,7 +12,7 @@ hwc utility Function introduction
 关：./hwc-utility -s power off
 
 
-3 control display mode
+3 control display mode                                                                                                                                                 
  3.1 query the mode that can be displayed                                                                                          
  ./hwc-utility -g display mode                                                                                               
  3.2 Set display mode                                                                                                         
