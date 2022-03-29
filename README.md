@@ -20,7 +20,7 @@ hwc utility 功能介绍
 ./hwc-utility -c VirtualDisplay
 
 6 控制layer 翻转
-./hwc-utility -s layer transform
+./hwc-utility -s layer transform                                                                                                         
 设置Layer Buffer
 ./hwc-utility -s layer buffer
 
