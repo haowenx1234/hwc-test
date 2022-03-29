@@ -4,7 +4,7 @@ Compile this program with the mm command
 
 hwc utility Function introduction                                                                                                                                       
 
-1.Display BMP format pictures
+1.Display BMP format pictures                                                                                                                                           
 ./hwc-utility -d image.bmp
 
 2 Control power supply                                                                                                                                                 
