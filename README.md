@@ -4,12 +4,12 @@ hwc utility 功能介绍
 ./hwc-utility -d image.bmp
 
 2 控制电源
-开：./hwc-utility -s power on
+开：./hwc-utility -s power on                                                                                                             
 关：./hwc-utility -s power off
 
 
 3 控示显示模式
-	1 查询能显示的mode 
+	1 查询能显示的mode                                                                                                               
 		./hwc-utility -g display mode
 	2 控制显示模式
 		./hwc-utility -s display mode mode id
@@ -17,10 +17,9 @@ hwc utility 功能介绍
 ./hwc-utility -g display property
 
 5 创建虚拟屏
-  ./hwc-utility -c VirtualDisplay
+./hwc-utility -c VirtualDisplay
 
 6 控制layer 翻转
-
 ./hwc-utility -s layer transform
 设置Layer Buffer
 ./hwc-utility -s layer buffer
