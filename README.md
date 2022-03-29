@@ -1,8 +1,8 @@
-How to build
+How to build                                                                                                                                                           
 Copy this folder hwc-test to any location under the Android source code
 Compile this program with the mm command
 
-hwc utility Function introduction
+hwc utility Function introduction                                                                                                                                       
 
 1.Display BMP format pictures
 ./hwc-utility -d image.bmp
