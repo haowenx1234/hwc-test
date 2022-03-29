@@ -1,11 +1,7 @@
 hwc utility 功能介绍
 
 1. 显示bmp格式图片
-
-Copy the executable and pictures to /data/local/tmp
-
 ./hwc-utility -d image.bmp
-
 
 2 控制电源
 开：./hwc-utility -s power on
@@ -13,39 +9,27 @@ Copy the executable and pictures to /data/local/tmp
 
 
 3 控示显示模式
-	1 查询能显示的mode 和 特性
-		./hwc-utility -g mode
-		./hwc-untility -g modeid  WIDTH
+	1 查询能显示的mode 
+		./hwc-utility -g display mode
 	2 控制显示模式
-		./hwc-utility -s mode mode_id（还在实现）
+		./hwc-utility -s display mode mode id
+4 查看显示mode的property
+./hwc-utility -g display property
 
-4 创建虚拟屏
+5 创建虚拟屏
   ./hwc-utility -c VirtualDisplay
 
-5 控制layer 翻转
+6 控制layer 翻转
 
 ./hwc-utility -s layer transform
-
-6 设置Layer Buffer
-
-  设置Layer DATASPACR
-
-  设置Layer DISPLAY_FRAME
-
-  设置Layer PLANE_ALPHA
-
-  设置Layer SOURCE_CROP
-
-  设置Layer VISABLE_REGION
-
-  设置Layer Z_ORDER
+设置Layer Buffer
+./hwc-utility -s layer buffer
 
 7 控制颜色翻转
-
 ./hwc-utility -s color transform
 
-
-
 8 查询ColorMode
+./hwc-utility -g color mode  //返回id为数值，可对照/hardware/interfaces/graphics/common/1.0/types.hal 查询
 
 9 设置ColorMOde
+./hwc-utility -s color mode id
