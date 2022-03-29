@@ -37,3 +37,4 @@ set Layer Buffer
 
 9 set ColorMOde
 ./hwc-utility -s color mode id
+ 
