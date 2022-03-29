@@ -1,6 +1,5 @@
 How to build                                                                                                                                                           
-Copy this folder hwc-test to any location 
-under the Android source code
+Copy this folder hwc-test to any location                                                                                                                               under the Android source code
 Compile this program with the mm command
 
 hwc utility Function introduction                                                                                                                                       
