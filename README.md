@@ -7,7 +7,7 @@ hwc utility Function introduction
 1.Display BMP format pictures
 ./hwc-utility -d image.bmp
 
-2 Control power supply
+2 Control power supply                                                                                                                                                 
 开：./hwc-utility -s power on                                                                                                             
 关：./hwc-utility -s power off
 
