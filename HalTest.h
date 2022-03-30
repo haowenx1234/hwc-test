@@ -59,7 +59,7 @@ class GraphicsComposerHwcTest {
     int32_t mDisplayHeight = 480;
     std::unique_ptr<CommandWriterBase> mWriter;
     std::unique_ptr<TestCommandReader> mReader;
-	int  readBmp(unsigned char **,char *);
+    int  readBmp(unsigned char **,char *);
     void displayBmpPicture(char *filename);
     void getDisplayProperty();
     void setPowerModeOff();
@@ -69,10 +69,10 @@ class GraphicsComposerHwcTest {
     void getDisplayConfig();
     void setActiveConfig(int);
     void setLayerTransform();
-	void getColorModes();
-	void setColorMode(int);
-	void setLayerBuffer();
-	void setLayerCompostionType();
+    void getColorModes();
+    void setColorMode(int);
+    void setLayerBuffer();
+    void setLayerCompostionType();
     void init();
     const native_handle_t* allocate() {
     uint64_t usage =
