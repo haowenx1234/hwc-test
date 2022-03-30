@@ -55,7 +55,7 @@ public:
     int32_t mDisplayHeight = 480;
     std::unique_ptr<CommandWriterBase> mWriter;
     std::unique_ptr<TestCommandReader> mReader;
-	int  readBmp (unsigned char **,char *);
+    int  readBmp (unsigned char **,char *);
     void displayBmpPicture(char *filename);
     void getDisplayProperty();
     void setPowerModeOff();
@@ -65,10 +65,10 @@ public:
     void getDisplayConfig();
     void setActiveConfig(int);
     void setLayerTransform();
-	void getColorModes();
-	void setColorMode(int);
-	void setLayerBuffer();
-	void setLayerCompostionType();
+    void getColorModes();
+    void setColorMode(int);
+    void setLayerBuffer();
+    void setLayerCompostionType();
     void init();
     const native_handle_t* allocate() {
     uint64_t usage =static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN |BufferUsage::COMPOSER_OVERLAY);
@@ -76,18 +76,18 @@ public:
     }
     void execute() { 
 		mComposerClient->execute(mReader.get(), mWriter.get()); 
+    }
+    Display GetInvalidDisplayId() {
+    std::vector<Display> validDisplays = mComposerCallback->getDisplays();
+    uint64_t id = std::numeric_limits<uint64_t>::max();
+	while (id > 0) {
+	    if (std::find(validDisplays.begin(), validDisplays.end(), id) == validDisplays.end()) {
+	    return id;
+	    }
+	id--;
 	}
-	Display GetInvalidDisplayId() {
-	std::vector<Display> validDisplays = mComposerCallback->getDisplays();
-	uint64_t id = std::numeric_limits<uint64_t>::max();
-		while (id > 0) {
-			if (std::find(validDisplays.begin(), validDisplays.end(), id) == validDisplays.end()) {
-				return id;
-			}
-		id--;
-		}
-		return 0;
-	}
+	return 0;
+    }
 	
 private:
     std::unique_ptr<Gralloc> mGralloc;
