@@ -75,11 +75,11 @@ public:
         return mGralloc->allocate(mDisplayWidth, mDisplayHeight, 1, PixelFormat::RGBA_8888, usage);
     }
     void execute() { 
-		mComposerClient->execute(mReader.get(), mWriter.get()); 
+	mComposerClient->execute(mReader.get(), mWriter.get()); 
     }
     Display GetInvalidDisplayId() {
-    std::vector<Display> validDisplays = mComposerCallback->getDisplays();
-    uint64_t id = std::numeric_limits<uint64_t>::max();
+    	std::vector<Display> validDisplays = mComposerCallback->getDisplays();
+    	uint64_t id = std::numeric_limits<uint64_t>::max();
 	while (id > 0) {
 	    if (std::find(validDisplays.begin(), validDisplays.end(), id) == validDisplays.end()) {
 	    return id;
