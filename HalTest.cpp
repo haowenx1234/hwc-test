@@ -12,9 +12,9 @@ void GraphicsComposerHwcTest::getDisplayProperty() {
     std::vector<Config> configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay);
     for (auto config : configs) {
         int32_t width = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
-                                                             IComposerClient::Attribute::    WIDTH);
+                                                             IComposerClient::Attribute::WIDTH);
         int32_t height = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
-                                                              IComposerClient::              Attribute::HEIGHT);
+                                                              IComposerClient::Attribute::HEIGHT);
     ASSERT_LT(0, width);
     ASSERT_LT(0, height);
     std::cout << "display config = " <<config << std::endl;
@@ -59,7 +59,6 @@ void GraphicsComposerHwcTest::setPowerModeOn() {
 void GraphicsComposerHwcTest::getDisplayConfig() {
     std::vector<Config> configs;
     ASSERT_NO_FATAL_FAILURE(configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay));
-
     for (auto config : configs) {
         std::cout << "display mode  = " << config << std::endl;
     }
@@ -74,10 +73,8 @@ void GraphicsComposerHwcTest::setColorTransform(){
         1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
         1.0f,
     }};
-
     mWriter->selectDisplay(mPrimaryDisplay);
     mWriter->setColorTransform(identity.data(), ColorTransform::IDENTITY);
-
     execute();
 }
 
@@ -175,14 +172,14 @@ void GraphicsComposerHwcTest::setLayerCompostionType() {
  }__attribute__((packed)) BITMAPINFOHEADER;
 
 int GraphicsComposerHwcTest::readBmp(unsigned char** image,char* fileName){
-	FILE* input;
-	int width, height, level;
-	BITMAPFILEHEADER bmfhdr;
-	BITMAPINFOHEADER bmihdr;
-	if (!(input = fopen(fileName, "r"))) {
+    FILE* input;
+    int width, height, level;
+    BITMAPFILEHEADER bmfhdr;
+    BITMAPINFOHEADER bmihdr;
+    if (!(input = fopen(fileName, "r"))) {
         printf("Cannot open file %s.\n",fileName);
         return 0;
-	 }
+    }
     fread(&bmfhdr.bfType, sizeof(WORD), 1, input);
     fread(&bmfhdr.bfSize, sizeof(DWORD), 1, input);
     fread(&bmfhdr.bfReserved1, sizeof(WORD), 1, input);
@@ -211,17 +208,15 @@ int GraphicsComposerHwcTest::readBmp(unsigned char** image,char* fileName){
     level = 4;
     if ((bmihdr.biBitCount == 1) || (bmihdr.biBitCount == 8)) {
         return 0;
-    }
-    else if (bmihdr.biBitCount == 24 || bmihdr.biBitCount == 32) {
+    } else if (bmihdr.biBitCount == 24 || bmihdr.biBitCount == 32) {
         int readPos = 0;
         for (int i = height - 1; i >= 0; i--) {
             readPos = i * width * (bmihdr.biBitCount / 8);
             int s = (size_t)(long)width * (bmihdr.biBitCount / 8);
              fread(*image + readPos, 1, s, input);
-    }
-    fclose(input);
-    }
-    else {
+    	}
+    	fclose(input);
+    } else {
         printf("Something wrong with biBitCount of image\n");
         return 0;
     }
@@ -244,20 +239,20 @@ void GraphicsComposerHwcTest::displayBmpPicture(char * filename) {
     std::cout << "start to display ..." << std::endl;
     data = static_cast<uint8_t*>(mGralloc->lock(handle,static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN),
                                                                         region, fence. release()));
-    if( readBmp(&data,filename)!= 1){
+    if ( readBmp(&data,filename)!= 1) {
 	//If the picture display fails, fill the memory with all colors
-		for (uint32_t x = 0; x < mDisplayWidth; x++) {
-		for (uint32_t y = 0; y < mDisplayHeight; y++) {
+	for (uint32_t x = 0; x < mDisplayWidth; x++) {
+	for (uint32_t y = 0; y < mDisplayHeight; y++) {
             memset(data,0x00, 1);
-        data += 1;
+            data += 1;
             memset(data,0xf1, 1);
-        data += 1;
+            data += 1;
             memset(data,0x88, 1);
-        data += 1;
+            data += 1;
             memset(data,0xff, 1);
-        data += 1;
-		}
-		}
+            data += 1;
+	}
+	}
     }
     Layer layer;
     layer = mComposerClient->createLayer(mPrimaryDisplay, kBufferSlotCount);
@@ -282,7 +277,7 @@ void GraphicsComposerHwcTest::displayBmpPicture(char * filename) {
 }
 
 void GraphicsComposerHwcTest::init() {
-	mComposer = std::make_unique<Composer>(IComposer::getService("default"));
+    mComposer = std::make_unique<Composer>(IComposer::getService("default"));
     mComposerClient = mComposer->createClient();
 
     mComposerCallback = new GraphicsComposerCallback;
@@ -302,17 +297,17 @@ void GraphicsComposerHwcTest::init() {
     std::vector<Config> configs = mComposerClient->getDisplayConfigs(mPrimaryDisplay);
     for (auto config : configs) {
     mDisplayWidth = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
-                                                         IComposerClient::Attribute::    WIDTH);
-	mDisplayHeight = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
-                                                          IComposerClient::              Attribute::HEIGHT);
+                                                         IComposerClient::Attribute::WIDTH);
+    mDisplayHeight = mComposerClient->getDisplayAttribute(mPrimaryDisplay, config,
+                                                          IComposerClient::Attribute::HEIGHT);
     }
 }
 
 }}}}}}
 
 int main(int argc,char *argv[]){
-	if (argc < 1) {
-        printf("error: Too few parameters");
+    if (argc < 1) {
+	printf("error: Too few parameters");
         return -1;
     }
     int ch;
@@ -321,56 +316,56 @@ int main(int argc,char *argv[]){
     char *command  = (char *)malloc(MAX_PATH_SIZE);
     if (strcmp(argv[1],"-s") != 0 && strcmp(argv[2],"mode")!=0) {
         system("stop surfaceflinger");
-		android::hardware::graphics::composer::V2_1::vts::GraphicsComposerHwcTest mHwc;
-		mHwc.init();
-		while ((ch = getopt(argc,argv,"a:bcdesg"))!= -1) {
-			switch (ch) {
-			case 's'://set
-			if (strcmp(argv[2],"power") == 0 && strcmp(argv[3],"on") == 0) {
-				mHwc.setPowerModeOn();
-			} else if (strcmp(argv[2],"power") == 0 && strcmp(argv[3],"off") == 0) {
-				mHwc.setPowerModeOff();
-			} else if (strcmp(argv[2],"display") == 0 &&strcmp(argv[3],"mode") == 0 ) {
-				mHwc.setActiveConfig(atoi(argv[3]));
-			} else if (strcmp(argv[2],"color") == 0 && strcmp(argv[3],"mode") == 0) {
-				mHwc.setColorMode(atoi(argv[4]));
-			} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"buffer") == 0) {
-				mHwc.setLayerBuffer();
-			} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"transform") == 0) {
-				std::cout << "layer transform " << std::endl;
-				mHwc.setLayerTransform();
-			} else if (strcmp(argv[2],"color") == 0 && strcmp(argv[3],"transform") == 0) {
+	android::hardware::graphics::composer::V2_1::vts::GraphicsComposerHwcTest mHwc;
+	mHwc.init();
+	while ((ch = getopt(argc,argv,"a:bcdesg"))!= -1) {
+	    switch (ch) {
+		case 's'://set
+		if (strcmp(argv[2],"power") == 0 && strcmp(argv[3],"on") == 0) {
+		    mHwc.setPowerModeOn();
+		} else if (strcmp(argv[2],"power") == 0 && strcmp(argv[3],"off") == 0) {
+		    mHwc.setPowerModeOff();
+		} else if (strcmp(argv[2],"display") == 0 &&strcmp(argv[3],"mode") == 0 ) {
+		    mHwc.setActiveConfig(atoi(argv[3]));
+		} else if (strcmp(argv[2],"color") == 0 && strcmp(argv[3],"mode") == 0) {
+		    mHwc.setColorMode(atoi(argv[4]));
+		} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"buffer") == 0) {
+		    mHwc.setLayerBuffer();
+		} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"transform") == 0) {
+		    std::cout << "layer transform " << std::endl;
+		    mHwc.setLayerTransform();
+		} else if (strcmp(argv[2],"color") == 0 && strcmp(argv[3],"transform") == 0) {
     	        std::cout << "color transform" << std::endl;
     	        mHwc.setColorTransform();
-			} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"compostion") == 0) {
-				mHwc.setLayerCompostionType();
-			}
-			break;
-			case 'c'://create
-			if (strcmp(argv[2],"VirtualDisplay") == 0 ) {
-				mHwc.createVirtualDisplay();
-			}
-			break;
-			case 'd'://display
-			strcpy(filePath, argv[2]);
-    	    mHwc.displayBmpPicture(filePath);
-			break;
-			case 'g'://get
-			if (strcmp(argv[2],"color") == 0&& strcmp(argv[3],"mode")==0 ) {
-				mHwc.getColorModes();
-			} else if (strcmp(argv[2],"display") == 0 && strcmp(argv[3],"mode") == 0) {
-				mHwc.getDisplayConfig();
-			}else if (strcmp(argv[2],"display") == 0 && strcmp(argv[3],"property") == 0) {	
-				mHwc.getDisplayProperty();
-			}
-			break;
-			}
+		} else if (strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"compostion") == 0) {
+		    mHwc.setLayerCompostionType();
+		}
+		break;
+		case 'c'://create
+		if (strcmp(argv[2],"VirtualDisplay") == 0 ) {
+		    mHwc.createVirtualDisplay();
+		}
+		break;
+		case 'd'://display
+		strcpy(filePath, argv[2]);
+    	        mHwc.displayBmpPicture(filePath);
+		break;
+		case 'g'://get
+		if (strcmp(argv[2],"color") == 0&& strcmp(argv[3],"mode")==0 ) {
+		    mHwc.getColorModes();
+		} else if (strcmp(argv[2],"display") == 0 && strcmp(argv[3],"mode") == 0) {
+		    mHwc.getDisplayConfig();
+		}else if (strcmp(argv[2],"display") == 0 && strcmp(argv[3],"property") == 0) {	
+		    mHwc.getDisplayProperty();
+		}
+		break;
+		}
 		}//end switch	
-	} else {
-		strcat(command,COMMAND);
-		strcat(command,argv[3]);
-		printf("the command = %s/n",command);
-		system(command);	
-	}//end if
+    } else {
+        strcat(command,COMMAND);
+	strcat(command,argv[3]);
+	printf("the command = %s/n",command);
+	system(command);	
+    }//end if
     return 0;
 }
