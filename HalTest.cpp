@@ -277,7 +277,7 @@ void GraphicsComposerHwcTest::displayBmpPicture(char * filename) {
 }
 
 void GraphicsComposerHwcTest::init() {
-	mComposer = std::make_unique<Composer>(IComposer::getService("default"));
+    mComposer = std::make_unique<Composer>(IComposer::getService("default"));
     mComposerClient = mComposer->createClient();
 
     mComposerCallback = new GraphicsComposerCallback;
@@ -328,18 +328,18 @@ int main(int argc,char *argv[]){
 			}
 			else if(strcmp(argv[2],"display") == 0 &&strcmp(argv[3],"mode") == 0 ){
 				mHwc.setActiveConfig(atoi(argv[3]));
-    	    }else if(strcmp(argv[2],"color") == 0 && strcmp(argv[3],"mode") == 0){
+    	    		}else if(strcmp(argv[2],"color") == 0 && strcmp(argv[3],"mode") == 0){
 				mHwc.setColorMode(atoi(argv[4]));
 			
-    	    }else if(strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"buffer") == 0){
+    	    		}else if(strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"buffer") == 0){
 				mHwc.setLayerBuffer();
 			}
 			else if(strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"transform") == 0){
 				std::cout << "layer transform " << std::endl;
 				mHwc.setLayerTransform();
 			}else if(strcmp(argv[2],"color") == 0 && strcmp(argv[3],"transform") == 0){
-    	        std::cout << "color transform" << std::endl;
-    	        mHwc.setColorTransform();
+    	        		std::cout << "color transform" << std::endl;
+    	       	 		mHwc.setColorTransform();
 			}else if(strcmp(argv[2],"layer") == 0 && strcmp(argv[3],"compostion") == 0){
 				mHwc.setLayerCompostionType();
 			}
@@ -351,7 +351,7 @@ int main(int argc,char *argv[]){
 			break;
 			case 'd'://display
 			strcpy(filePath, argv[2]);
-    	    mHwc.displayBmpPicture(filePath);
+    	    		mHwc.displayBmpPicture(filePath);
 			break;
 			case 'g'://get
 			if(strcmp(argv[2],"color") == 0&& strcmp(argv[3],"mode")==0 ){
