@@ -200,9 +200,9 @@ int GraphicsComposerHwcTest::readBmp(unsigned char** image,char* fileName){
     printf("| biHeight: %d\n", bmihdr.biHeight);
     width = bmihdr.biWidth;
     height = bmihdr.biHeight;
-    if(mDisplayWidth != width || mDisplayHeight != height){
+    if (mDisplayWidth != width || mDisplayHeight != height) {
         printf("fail to diplay picture %s\n",fileName);
-        printf( "picture %d*%d size is not match display %d*%dsize ",width,height,       mDisplayWidth,mDisplayHeight);
+        printf( "picture %d*%d size is not match display %d*%dsize ",width,height,mDisplayWidth,mDisplayHeight);
         return 0;
     }
     level = 4;
@@ -231,7 +231,7 @@ void GraphicsComposerHwcTest::displayBmpPicture(char * filename) {
 
     ASSERT_NO_FATAL_FAILURE(handle = allocate());
     ASSERT_NE(nullptr, handle);
-    const android::hardware::graphics::composer::V2_1::vts::AccessRegion region{0, 0,       static_cast<int32_t>(mDisplayWidth),
+    const android::hardware::graphics::composer::V2_1::vts::AccessRegion region{0, 0,static_cast<int32_t>(mDisplayWidth),
                                static_cast<int32_t>(mDisplayHeight)};
     base::unique_fd fence;
     uint8_t* data;
@@ -282,14 +282,14 @@ void GraphicsComposerHwcTest::init() {
 
     mComposerCallback = new GraphicsComposerCallback;
     mComposerClient->registerCallback(mComposerCallback);
-
+	
     // assume the first display is primary and is never removed
     mPrimaryDisplay = waitForFirstDisplay();
 
     // explicitly disable vsync
     mComposerClient->setVsyncEnabled(mPrimaryDisplay, false);
     mComposerCallback->setVsyncAllowed(false);
-
+	
     mInvalidDisplayId = GetInvalidDisplayId();
     mWriter = std::make_unique<CommandWriterBase>(1024);
     mReader = std::make_unique<TestCommandReader>();
