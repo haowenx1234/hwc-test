@@ -370,7 +370,7 @@ int main(int argc,char *argv[]){
 	else{
 		strcat(command,COMMAND);
 		strcat(command,argv[3]);
-		printf("the command = %s/n",command);
+		printf("the command = %s\n",command);
 		system(command);	
 	}//end if
     return 0;
