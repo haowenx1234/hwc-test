@@ -57,7 +57,7 @@ public:
     std::unique_ptr<TestCommandReader> mReader;
     int  readBmp (unsigned char **,char *);
     void displayBmpPicture(char *filename);
-	void displayStripePicture();
+    void displayStripePicture();
     void getDisplayProperty();
     void setPowerModeOff();
     void setPowerModeOn();
