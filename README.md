@@ -1,26 +1,25 @@
 version 1.0                                                                                                                                                             
 How to build                                                                                                                                                           
-Copy this folder hwc-test to any location                                                                                                 under the Android source code
+Copy this folder hwc-test to any location                                                                                              
+under the Android source code                                                                                                             
 Compile this program with the mm command
 
-hwc utility Function introduction                                                                                                                                       
-
+hwc utility Function introduction                                                                                                         
 1
-1.1.Display BMP format pictures                                                                                                                                           
-./hwc-utility -d picture image.bmp                                                                                                       
+1.1.Display BMP format pictures                                                                                                          
+./hwc-utility -d picture image.bmp                                                                                                                                                                                                             
 1.2 display stripe picture
 ./hwc-utility -d stripe
 
-2 Control power supply                                                                                                                                                 
+2 Control power supply                                                                                                                   
 开：./hwc-utility -s power on                                                                                                             
 关：./hwc-utility -s power off
 
-
-3 control display mode                                                                                                                                                 
- 3.1 query the mode that can be displayed                                                                                          
- ./hwc-utility -g active mode
+3 control display mode                                                                                                                   
+3.1 query the current active config                                                                                         
+./hwc-utility -g active mode
  
- 3.2 Set display mode  
+3.2 Set display mode  
 setprop vendor.hwcomposer.preferred.mode.limit  0                                                                                         
 stop vendor.hwcomposer-2-4                                                                                                               
 start vendor.hwcomposer-2-4                                                                                                        
