@@ -18,15 +18,15 @@ hwc utility Function introduction
 
 3 control display mode                                                                                                                                                 
  3.1 query the mode that can be displayed                                                                                          
- ./hwc-utility -g active mode                                                                                               
+ ./hwc-utility -g active mode
+ 
  3.2 Set display mode  
-
 setprop vendor.hwcomposer.preferred.mode.limit  0                                                                                         
 stop vendor.hwcomposer-2-4                                                                                                               
 start vendor.hwcomposer-2-4                                                                                                               
-./hwc-utility -s display mode id                                                                                       
- 3.3 View the property of all display mode property                                                                                                                  
-./hwc-utility -g display property                                                                                                                                                                                                                 
+./hwc-utility -s display mode id
+
+ 3.3 View the property of all display mode property                                                                                        ./hwc-utility -g display property                                                                                                                                                                                                                 
 5 Create virtual screen
 ./hwc-utility -c VirtualDisplay
 
