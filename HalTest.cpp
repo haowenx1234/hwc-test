@@ -373,11 +373,11 @@ int main(int argc,char *argv[]){
 	    strcat(command,argv[4]);
 	    printf("the command = %s\n",command);
 	    system(command);	
-	} else {
-    system("stop surfaceflinger");
-    android::hardware::graphics::composer::V2_1::vts::GraphicsComposerHwcTest mHwc;
-	mHwc.init();
-	while ((ch = getopt(argc,argv,"a:bcdesg"))!= -1) {
+     } else {
+         system("stop surfaceflinger");
+         android::hardware::graphics::composer::V2_1::vts::GraphicsComposerHwcTest mHwc;
+	 mHwc.init();
+	 while ((ch = getopt(argc,argv,"a:bcdesg"))!= -1) {
 	    switch (ch) {
 		case 's'://set
 		if (strcmp(argv[2],"power") == 0 && strcmp(argv[3],"on") == 0) {
@@ -409,7 +409,7 @@ int main(int argc,char *argv[]){
 		if (strcmp(argv[2],"picture")== 0 ) {
 		    mHwc.getActiveConfig();
 	        strcpy(filePath, argv[3]);
-            mHwc.displayBmpPicture(filePath);
+                mHwc.displayBmpPicture(filePath);
 		}else if (strcmp(argv[2],"stripe") == 0 ) {
 		    mHwc.getActiveConfig();
 			mHwc.displayStripePicture();
