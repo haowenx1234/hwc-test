@@ -23,7 +23,7 @@ hwc utility Function introduction
  3.2 Set display mode  
 setprop vendor.hwcomposer.preferred.mode.limit  0                                                                                         
 stop vendor.hwcomposer-2-4                                                                                                               
-start vendor.hwcomposer-2-4                                                                                                               
+start vendor.hwcomposer-2-4                                                                                                               stop;start                                                                                                              
 ./hwc-utility -s display mode id
 
  3.3 View the property of all display mode property                                                                                        ./hwc-utility -g display property                                                                                                                                                                                                                 
