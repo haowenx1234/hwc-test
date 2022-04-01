@@ -29,7 +29,7 @@ stop;start
 
  3.3 View the property of all display mode property                        
  ./hwc-utility -g display property                                                                                                                                                                                                                 
-5 Create virtual screen
+5 Create virtual screen                                                                                                                                                 
 ./hwc-utility -c VirtualDisplay
 
 6 Control layer transform
