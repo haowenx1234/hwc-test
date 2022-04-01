@@ -37,12 +37,12 @@ stop;start
 set Layer Buffer
 ./hwc-utility -s layer buffer
 
-7 set color tarnsform
+7 set color tarnsform                                                                                                                                                   
 ./hwc-utility -s color transform
 
-8  querry ColorMode
+8  querry ColorMode                                                                                                                                                     
 ./hwc-utility -g color mode //返回id为数值，可对照/hardware/interfaces/graphics/common/1.0/types.hal 查询
 
-9 set ColorMOde
+9 set Color Mode                                                                                                                                                       
 ./hwc-utility -s color mode id
  
