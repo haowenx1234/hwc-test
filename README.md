@@ -6,10 +6,11 @@ Compile this program with the mm command
 
 hwc utility Function introduction                                                                                                         
 1
-1.1.Display BMP format pictures                                                                                                          
-./hwc-utility -d picture image.bmp                                                                                                                                                                                                             
-1.2 display stripe picture
+1.1 display stripe picture                                                                                                                                             
 ./hwc-utility -d stripe
+
+1.2 Display BMP format pictures                                                                                                          
+./hwc-utility -d picture image.bmp 
 
 2 Control power supply                                                                                                                   
 开：./hwc-utility -s power on                                                                                                             
@@ -26,7 +27,8 @@ start vendor.hwcomposer-2-4
 stop;start                                                                                                              
 ./hwc-utility -s display mode id
 
- 3.3 View the property of all display mode property                                                                                        ./hwc-utility -g display property                                                                                                                                                                                                                 
+ 3.3 View the property of all display mode property                        
+ ./hwc-utility -g display property                                                                                                                                                                                                                 
 5 Create virtual screen
 ./hwc-utility -c VirtualDisplay
 
