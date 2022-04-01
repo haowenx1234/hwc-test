@@ -369,10 +369,10 @@ int main(int argc,char *argv[]){
     char *command  = (char *)malloc(MAX_PATH_SIZE);
 
     if (strcmp(argv[1],"-s") == 0 && strcmp(argv[2],"display") == 0 && strcmp(argv[3],"mode")==0) {	
-        strcat(command,COMMAND);
-	    strcat(command,argv[4]);
-	    printf("the command = %s\n",command);
-	    system(command);	
+         strcat(command,COMMAND);
+	 strcat(command,argv[4]);
+	 printf("the command = %s\n",command);
+	 system(command);	
      } else {
          system("stop surfaceflinger");
          android::hardware::graphics::composer::V2_1::vts::GraphicsComposerHwcTest mHwc;
