@@ -26,23 +26,24 @@ stop vendor.hwcomposer-2-4
 start vendor.hwcomposer-2-4                                                                                                        
 stop;start                                                                                                              
 ./hwc-utility -s display mode id
+Wait a few seconds before it takes effect
 
  3.3 View the property of all display mode property                        
  ./hwc-utility -g display property                                                                                                                                                                                                                 
-5 Create virtual screen                                                                                                                                                 
+4 Create virtual screen                                                                                                                                                 
 ./hwc-utility -c VirtualDisplay
 
-6 Control layer transform
+5 Control layer transform
 ./hwc-utility -s layer transform                                                                                                         
 set Layer Buffer
 ./hwc-utility -s layer buffer
 
-7 set color tarnsform                                                                                                                                                   
+6 set color tarnsform                                                                                                                                                   
 ./hwc-utility -s color transform
 
-8  querry ColorMode                                                                                                                                                     
+7  querry ColorMode                                                                                                                                                     
 ./hwc-utility -g color mode //返回id为数值，可对照/hardware/interfaces/graphics/common/1.0/types.hal 查询
 
-9 set Color Mode                                                                                                                                                       
+8 set Color Mode                                                                                                                                                       
 ./hwc-utility -s color mode id
  
