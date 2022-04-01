@@ -243,8 +243,8 @@ void GraphicsComposerHwcTest::displayBmpPicture(char * filename) {
     std::cout << "start to display ..." << std::endl;
     data = static_cast<uint8_t*>(mGralloc->lock(handle,static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN),
                                                                         region, fence. release()));
-	readBmp(&data,filename);
-	Layer layer;
+    readBmp(&data,filename);
+    Layer layer;
     layer = mComposerClient->createLayer(mPrimaryDisplay, kBufferSlotCount);
     mWriter->selectLayer(layer);
     mWriter->setLayerCompositionType(IComposerClient::Composition::DEVICE);
@@ -283,9 +283,9 @@ void GraphicsComposerHwcTest::displayStripePicture() {
     data = static_cast<uint8_t*>(mGralloc->lock(handle,static_cast<uint64_t>(BufferUsage::CPU_WRITE_OFTEN | BufferUsage::CPU_READ_OFTEN),
                                                                         region, fence. release()));
 	//If the picture display fails, fill the memory with all colors
-	for (uint32_t x = 0; x < mDisplayHeight; x++) {
-	for (uint32_t y = 0; y < mDisplayWidth; y++) {
-		if (y >= 0 && y < mDisplayWidth /3){
+    for (uint32_t x = 0; x < mDisplayHeight; x++) {
+    for (uint32_t y = 0; y < mDisplayWidth; y++) {
+	if (y >= 0 && y < mDisplayWidth /3){
             memset(data,0xff, 1);
             data += 1;
             memset(data,0x00, 1);
@@ -294,7 +294,7 @@ void GraphicsComposerHwcTest::displayStripePicture() {
             data += 1;
             memset(data,0xff, 1);
             data += 1;
-		} else if (y >= mDisplayWidth /3&& y < mDisplayWidth /3 *2){ 	
+	} else if (y >= mDisplayWidth /3&& y < mDisplayWidth /3 *2){ 	
             memset(data,0x00, 1);
             data += 1;
             memset(data,0xff, 1);
@@ -303,7 +303,7 @@ void GraphicsComposerHwcTest::displayStripePicture() {
             data += 1;
             memset(data,0xff, 1);
             data += 1;
-		} else if (y >= mDisplayWidth /3 *2&& y < mDisplayWidth ){ 	
+	} else if (y >= mDisplayWidth /3 *2&& y < mDisplayWidth ){ 	
             memset(data,0x00, 1);
             data += 1;
             memset(data,0x00, 1);
@@ -312,9 +312,9 @@ void GraphicsComposerHwcTest::displayStripePicture() {
             data += 1;
             memset(data,0xff, 1);
             data += 1;
-		}
 	}
-    }
+    }//end for
+    }//end for
     Layer layer;
     layer = mComposerClient->createLayer(mPrimaryDisplay, kBufferSlotCount);
     mWriter->selectLayer(layer);
@@ -408,11 +408,11 @@ int main(int argc,char *argv[]){
 		case 'd'://display
 		if (strcmp(argv[2],"picture")== 0 ) {
 		    mHwc.getActiveConfig();
-	        strcpy(filePath, argv[3]);
-                mHwc.displayBmpPicture(filePath);
+	            strcpy(filePath, argv[3]);
+                    mHwc.displayBmpPicture(filePath);
 		}else if (strcmp(argv[2],"stripe") == 0 ) {
 		    mHwc.getActiveConfig();
-			mHwc.displayStripePicture();
+		    mHwc.displayStripePicture();
 		}
 		break;
 		case 'g'://get
